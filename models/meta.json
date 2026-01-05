@@ -1,0 +1,14 @@
+{
+  "feature_cols": [
+    "constraint",
+    "math",
+    "algoword",
+    "length"
+  ],
+  "score_model": {
+    "model_file": "score_xgb.joblib",
+    "target": "problem_score",
+    "type": "regression",
+    "loss": "pseudohubererror"
+  }
+}

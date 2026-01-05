@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problem Difficulty Predictor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1d2b64 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        .form-section {
+            margin-bottom: 15px;
+        }
+
+        .form-section h3 {
+            color: #1e293b;
+            font-size: 1.2em;
+            font-weight: 700;
+            margin: 30px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #6366f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-section:first-of-type h3 {
+            margin-top: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        label {
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+            color: #334155;
+            font-size: 0.95em;
+            letter-spacing: 0.2px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+
+        input:hover, textarea:hover {
+            border-color: #cbd5e1;
+            background: #ffffff;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        .btn {
+            margin-top: 35px;
+            width: 100%;
+            padding: 18px;
+            font-size: 1.1em;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #fff;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.35);
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 45px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.loading {
+            opacity: 0.85;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 40px;
+            padding: 35px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            display: none;
+            border-left: 5px solid #6366f1;
+            animation: slideIn 0.5s ease;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.12);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result h3 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            color: #1e293b;
+            font-size: 1.4em;
+            font-weight: 800;
+        }
+
+        .result-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 800;
+            color: white;
+            font-size: 1.15em;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .easy { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .medium { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
+        .hard { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
+
+        .score-box {
+            flex: 1;
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 1em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .score {
+            font-size: 2.2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 45px;
+            color: #94a3b8;
+            font-size: 0.9em;
+            letter-spacing: 0.3px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: span 1;
+            }
+
+            .result-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>Problem Difficulty Predictor</h1>
+    <div class="subtitle">
+        Paste a programming problem to estimate its difficulty using ML
+    </div>
+
+    <form id="form">
+        <div class="form-section">
+            <h3>Problem Basics</h3>
+            <div class="grid">
+                <div class="full">
+                    <label>Problem Title</label>
+                    <input name="title" type="text" placeholder="e.g., Two Sum, Longest Substring...">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Problem Details</h3>
+            <div class="grid">
+                <div>
+                    <label>Input Description</label>
+                    <textarea name="input_description" placeholder="Describe the input format and constraints..."></textarea>
+                </div>
+
+                <div>
+                    <label>Output Description</label>
+                    <textarea name="output_description" placeholder="Describe the expected output..."></textarea>
+                </div>
+
+                <div class="full">
+                    <label>Problem Description</label>
+                    <textarea name="description" placeholder="Full problem statement..."></textarea>
+                </div>
+
+                <div class="full">
+                    <label>Sample Input/Output</label>
+                    <textarea name="sample_io" placeholder="Examples of input and output..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" id="submitBtn" type="submit">🎯 Predict Difficulty</button>
+    </form>
+
+    <div id="result" class="result">
+        <h3>✨ Prediction Result</h3>
+        <div class="result-content">
+            <div>
+                <div style="color: #888; font-size: 0.95em; margin-bottom: 8px;">Difficulty Level</div>
+                <span id="difficulty" class="badge"></span>
+            </div>
+            <div class="score-box">
+                <div class="score-label">Difficulty Score</div>
+                <div class="score"><span id="score"></span> / 100</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Local ML demo · No data stored · Educational use
+</footer>
+
+<script>
+    const form = document.getElementById("form");
+    const resultBox = document.getElementById("result");
+    const difficultySpan = document.getElementById("difficulty");
+    const scoreSpan = document.getElementById("score");
+    const submitBtn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        submitBtn.disabled = true;
+        submitBtn.classList.add("loading");
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = "⏳ Analyzing...";
+
+        try {
+            const data = new FormData(form);
+
+            const res = await fetch("/predict", {
+                method: "POST",
+                body: data
+            });
+
+            if (!res.ok) throw new Error("Prediction failed");
+
+            const json = await res.json();
+
+            resultBox.style.display = "block";
+            difficultySpan.textContent = json.predicted_class.toUpperCase();
+            difficultySpan.className = "badge " + json.predicted_class;
+            scoreSpan.textContent = (json.predicted_score * 100).toFixed(1);
+            
+    
+            resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+           
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("loading");
+            submitBtn.textContent = originalText;
+        }
+    });
+</script>
+</body>
+</html>

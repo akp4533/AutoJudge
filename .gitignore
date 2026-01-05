@@ -1,0 +1,17 @@
+# Environments
+autojudge-env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Large data
+data_cf/
+data_kt/
+*.parquet
+
+# Models
+models/*.joblib
+
+# Jupyter
+.ipynb_checkpoints/

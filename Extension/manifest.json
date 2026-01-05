@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "CF Difficulty Predictor",
+  "version": "1.0",
+  "description": "Predicts difficulty of Codeforces problems by calling a local ML API.",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": [
+    "https://codeforces.com/*",
+    "http://127.0.0.1:5000/*",
+    "http://localhost:5000/*"
+  ],
+  "action": {
+    "default_title": "Predict difficulty",
+    "default_popup": "popup.html"
+  }
+}
