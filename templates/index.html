@@ -332,11 +332,19 @@
         submitBtn.textContent = "⏳ Analyzing...";
 
         try {
-            const data = new FormData(form);
-
+            const payload = {
+                title: form.title.value,
+                description: form.description.value,
+                input_description: form.input_description.value,
+                output_description: form.output_description.value,
+                sample_io: form.sample_io.value
+            };
             const res = await fetch("/predict", {
                 method: "POST",
-                body: data
+                headers: {
+                   "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
             });
 
             if (!res.ok) throw new Error("Prediction failed");
