@@ -10,8 +10,5 @@ data_cf/
 data_kt/
 *.parquet
 
-# Models
-models/*.joblib
-
 # Jupyter
 .ipynb_checkpoints/
