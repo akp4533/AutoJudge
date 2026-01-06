@@ -354,7 +354,7 @@
             resultBox.style.display = "block";
             difficultySpan.textContent = json.predicted_class.toUpperCase();
             difficultySpan.className = "badge " + json.predicted_class;
-            scoreSpan.textContent = (json.predicted_score * 100).toFixed(1);
+            scoreSpan.textContent = (json.predicted_score * 10).toFixed(1);
             
     
             resultBox.scrollIntoView({ behavior: "smooth", block: "nearest" });

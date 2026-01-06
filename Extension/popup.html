@@ -88,10 +88,20 @@
         margin-top: 16px;
         background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         border-radius: 12px;
-        padding: 16px;
+        padding: 16px 18px;
         border: 2px solid #e2e8f0;
         display: none;
         animation: slideIn 0.4s ease;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .score-block {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        align-items: flex-start;
       }
 
       @keyframes slideIn {
@@ -147,8 +157,10 @@
       <div id="status"></div>
       <div id="result">
         <div id="result-difficulty"></div>
-        <div class="score-label">Difficulty Score</div>
-        <div class="score" id="result-score"></div>
+        <div class="score-block">
+          <div class="score-label">Difficulty Score</div>
+          <div class="score" id="result-score"></div>
+        </div>
       </div>
     </div>
     <script src="popup.js"></script>

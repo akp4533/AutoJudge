@@ -2,7 +2,10 @@ const API_URL = "http://127.0.0.1:5000/predict";
 
 const btn = document.getElementById("predict");
 const status = document.getElementById("status");
-const resultEl = document.getElementById("result");
+
+const resultBox = document.getElementById("result");
+const difficultyEl = document.getElementById("result-difficulty");
+const scoreEl = document.getElementById("result-score");
 
 function extractProblemFields() {
   const root = document.querySelector(".problem-statement");
@@ -41,7 +44,7 @@ function extractProblemFields() {
 
 btn.onclick = async () => {
   status.innerText = "Extracting problem text...";
-  resultEl.innerText = "";
+  resultBox.style.display = "none";
 
   try {
     const [tab] = await chrome.tabs.query({
@@ -71,13 +74,22 @@ btn.onclick = async () => {
     }
 
     const data = await resp.json();
+    console.log("API response:", data);
 
+    const cls = data.predicted_class.toLowerCase();
+
+    difficultyEl.innerHTML =
+      `<span class="badge ${cls}">${data.predicted_class}</span>`;
+
+    scoreEl.innerText = (data.predicted_score*10).toFixed(2);
+
+    resultBox.style.display = "flex";
     status.innerText = "";
-    resultEl.innerText =
-      `Predicted rating: ${Math.round(data.predicted_score)}`;
+
   } catch (err) {
     status.innerText = "";
-    resultEl.innerText = `Error: ${err.message}`;
+    resultBox.style.display = "none";
+    alert(`Error: ${err.message}`);
     console.error(err);
   }
 };
