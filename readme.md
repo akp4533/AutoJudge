@@ -164,7 +164,7 @@ A Chrome browser extension was developed to eliminate manual copy-pasting of pro
 ---
 
 ## Demo Video:
-Link: https://drive.google.com/file/d/1Df-oI3pC7JFhdM-eOnPaXQeb0NfpvXKA/view?usp=sharing
+Link: https://youtu.be/lQb4QGTojd0
 
 ---
 
