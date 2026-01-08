@@ -163,6 +163,11 @@ A Chrome browser extension was developed to eliminate manual copy-pasting of pro
 
 ---
 
+## Demo Video:
+Link: https://drive.google.com/file/d/1Df-oI3pC7JFhdM-eOnPaXQeb0NfpvXKA/view?usp=sharing
+
+---
+
 ## Running the Project Locally
 
 ### 1. Backend Setup
@@ -198,6 +203,9 @@ The Flask server will start at `http://127.0.0.1:5000`.
 3. Click **Load unpacked** and select the `Extension/` directory
 4. Open a Codeforces problem page
 5. Click the extension icon and press **Predict Difficulty**
+
+### Note:
+Change the file paths to your local directory path wherever required
 
 ---
 
